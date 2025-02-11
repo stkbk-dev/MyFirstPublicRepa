@@ -45,6 +45,9 @@ public class ArithmeticMember {
 		if (value.matches(regexForRomanNumbers)) {
 					description = "roman";
 					this.valueInt = fromRomanNumeralToArabic(value);
+					if (Integer.valueOf(valueInt)<1|| Integer.valueOf(valueInt )> 10) {
+						throw new InvalidInputException("Римскими числами могут быть I - X включительно");
+					}
 		}
 
 		if (description == null) {
