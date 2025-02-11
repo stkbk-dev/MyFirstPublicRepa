@@ -7,13 +7,13 @@ public class ArithmeticMember {
 
 	private final static String[] ROMAN_NUMERALS = { "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I" };
 	private final static int[] DECIMAL_VALUES = { 100, 90, 50, 40, 10, 9, 5, 4, 1 };
-    //regex for founding single or double decimals. ex. '1' or "22"
+	// regex for founding single or double decimals. ex. '1' or "22"
 	private static String regexForArabicNumbers = "\\d||\\d\\d";
 	// string.match([+-*/]);
-	// regex for founding roman leter 
+	// regex for founding roman leter
 //	private static String regexForRomanNumbers = "X||IX||V||IV||I";
 	private static String regexForRomanNumbers = "[IXV]||[IXV][IXV]||[IXV][IXV][IXV]||[IXV][IXV][IXV][IXV]";
-	//regex not digit and not letter
+	// regex not digit and not letter
 	private static String regexForArithmeticOperators = "\\W";
 
 	public ArithmeticMember(String value) throws InvalidInputException {
@@ -33,22 +33,25 @@ public class ArithmeticMember {
 			}
 		}
 
-
 		if (value.matches(regexForArabicNumbers)) {
-			if (Integer.valueOf(value)<1|| Integer.valueOf(value )> 10) {
+			if (Integer.valueOf(value) < 1 || Integer.valueOf(value) > 10) {
 				throw new InvalidInputException("Арабскими числами могут быть 1 - 10 включительно");
 			}
-			this.valueInt = Integer.valueOf(value) ;
+			this.valueInt = Integer.valueOf(value);
 			description = "arab";
 		}
 
 		if (value.matches(regexForRomanNumbers)) {
-					description = "roman";
-					this.valueInt = fromRomanNumeralToArabic(value);
-					if (Integer.valueOf(valueInt)<1|| Integer.valueOf(valueInt )> 10) {
-						throw new InvalidInputException("Римскими числами могут быть I - X включительно");
-					}
-		}
+			description = "roman";
+			if (isRomanNumberValid(value) != true) {
+				throw new InvalidInputException(value + " is not valid roman number.");
+			}
+				this.valueInt = fromRomanNumeralToArabic(value);
+				if (Integer.valueOf(valueInt) < 1 || Integer.valueOf(valueInt) > 10) {
+					throw new InvalidInputException("Римскими числами могут быть I - X включительно");
+				}
+			}
+		
 
 		if (description == null) {
 			throw new InvalidInputException("ввод данных недостаточен для выполнения операции");
@@ -101,6 +104,17 @@ public class ArithmeticMember {
 			}
 		}
 		return result;
+	}
+
+	public static boolean isRomanNumberValid(String romanNumeral) {
+		final String[] ROMAN_NUMERALS_VALID = { "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X" };
+		for (String validNumeral : ROMAN_NUMERALS_VALID) {
+			if (romanNumeral.toUpperCase().equals(validNumeral)) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 }
